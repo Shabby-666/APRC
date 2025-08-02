@@ -25,10 +25,11 @@
 ## 安装方法
 
 1. 使用Maven构建项目：
+   依次执行
    ```bash
    mvn clean
    ```
-   然后执行
+   
    ```bash
    mvn package
    ```
