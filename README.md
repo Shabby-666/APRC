@@ -26,7 +26,11 @@
 
 1. 使用Maven构建项目：
    ```bash
-   mvn clean package
+   mvn clean
+   ```
+   然后执行
+   ```bash
+   mvn package
    ```
 2. 将生成的`target/anti-politically-related-content-1.0-SNAPSHOT.jar`复制到服务器的`plugins`文件夹
 3. 重启服务器
