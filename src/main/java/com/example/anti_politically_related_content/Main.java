@@ -3,6 +3,7 @@ package com.example.anti_politically_related_content;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.Bukkit;
@@ -14,8 +15,13 @@ import okhttp3.*;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class Main extends JavaPlugin implements Listener {
-    private static final String API_KEY = "你的API Key（不填写的我敬你是个人物）";
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.CommandExecutor;
+
+public class Main extends JavaPlugin implements Listener, CommandExecutor {
+    private boolean aiEnabled = true;
+    private static final String API_KEY = "填入你的openrouter.ai API Key（不填的我敬你是个人物）";
     private static final String MODEL = "deepseek/deepseek-chat-v3-0324:free";
     private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
     private final OkHttpClient httpClient = new OkHttpClient();
@@ -23,21 +29,25 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
+        getCommand("aprc").setExecutor(this);
         getLogger().info("Anti-Politically Related Content插件已启用");
     }
 
     @EventHandler
-    public void onPlayerChat(org.bukkit.event.player.AsyncPlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!aiEnabled) return;
         handleContentCheck(event.getMessage(), event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        if (!aiEnabled) return;
         handleContentCheck(event.getMessage(), event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (!aiEnabled) return;
         Player player = event.getPlayer();
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {
@@ -57,8 +67,36 @@ public class Main extends JavaPlugin implements Listener {
         });
     }
 
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!sender.hasPermission("aprc.admin")) {
+            sender.sendMessage("§c你没有权限使用此命令");
+            return true;
+        }
+        
+        if (args.length == 0) {
+            sender.sendMessage("§aAPRC状态: " + (aiEnabled ? "§a启用" : "§c禁用"));
+            return true;
+        }
+        
+        if (args[0].equalsIgnoreCase("on")) {
+            aiEnabled = true;
+            sender.sendMessage("§a已启用APRC AI审核");
+            getLogger().info(sender.getName() + " 已启用APRC AI审核");
+            return true;
+        } else if (args[0].equalsIgnoreCase("off")) {
+            aiEnabled = false;
+            sender.sendMessage("§c已禁用APRC AI审核");
+            getLogger().info(sender.getName() + " 已禁用APRC AI审核");
+            return true;
+        }
+        
+        sender.sendMessage("§c用法: /aprc [on|off]");
+        return true;
+    }
+
     private void handleContentCheck(String content, Player player) {
-        if (content == null || player == null) {
+        if (!aiEnabled || content == null || player == null) {
             return;
         }
         
@@ -98,7 +136,7 @@ public class Main extends JavaPlugin implements Listener {
         // 系统提示
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
-        systemMessage.addProperty("content", "请严格判断以下内容是否包含涉政言论(只回答Yes或No)。不要屏蔽脏话或粗口，只判断是否涉及政治内容。如果内容违规请回答Yes，否则回答No。");
+        systemMessage.addProperty("content", "请严格判断以下内容是否包含涉政言论(只回答Yes或No)。不要判断是否有脏话或粗口，只判断是否涉及政治内容。如果内容违规请回答Yes，否则回答No。");
         messages.add(systemMessage);
         
         // 用户消息
@@ -114,7 +152,7 @@ public class Main extends JavaPlugin implements Listener {
             .url(API_URL)
             .header("Authorization", "Bearer " + API_KEY)
             .header("Content-Type", "application/json")
-            .post(RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+            .post(RequestBody.create(requestBody.toString(), MediaType.get("application/json")))
             .build();
         
         try (Response response = httpClient.newCall(request).execute()) {

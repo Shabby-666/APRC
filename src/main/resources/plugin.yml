@@ -1,6 +1,16 @@
 name: Anti-Politically-Related-Content
-version: 1.0
+version: 3.0-SNAPSHOT
 main: com.example.anti_politically_related_content.Main
 api-version: 1.21
 description: 自动审核并撤回玩家聊天中的涉政内容
 authors: [WeCraft（_Chinese_Player_）]
+
+commands:
+  aprc:
+    description: 开关APRC AI审核功能
+    usage: /aprc [on|off]
+
+permissions:
+  aprc.admin:
+    description: 允许使用APRC管理命令
+    default: op
