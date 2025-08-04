@@ -6,6 +6,10 @@
 
 这是一个Minecraft Bukkit插件，用于检测和过滤游戏中的政治相关内容。插件使用OpenRouter AI API对玩家聊天内容、命令和玩家ID进行实时审核。
 
+## 特别鸣谢
+
+感谢 [抖音-Pisoft](https://www.douyin.com/user/MS4wLjABAAAAueJ9tO_7lvvx4c-n-L0X_zKgqu8aQfIBySLvRmOlQv46MGafyyxHSMCQ-e2rqcgT?from_tab_name=main) 帮助测试
+
 ## 功能特点
 
 - 实时监控玩家聊天内容
