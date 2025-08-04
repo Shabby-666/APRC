@@ -51,6 +51,7 @@
      api_key: 备用API密钥
      model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
      api_url: https://api.siliconflow.cn/v1/chat/completions
+   ```
 
 ### 响应自定义
 
