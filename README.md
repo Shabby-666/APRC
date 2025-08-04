@@ -8,7 +8,7 @@
 
 ## 特别鸣谢
 
-感谢 [抖音-Pisoft](https://www.douyin.com/user/MS4wLjABAAAAueJ9tO_7lvvx4c-n-L0X_zKgqu8aQfIBySLvRmOlQv46MGafyyxHSMCQ-e2rqcgT?from_tab_name=main) 帮助测试。[他的github](https://github.com/pisoft)
+感谢 [抖音-Pisoft](https://www.douyin.com/user/MS4wLjABAAAAueJ9tO_7lvvx4c-n-L0X_zKgqu8aQfIBySLvRmOlQv46MGafyyxHSMCQ-e2rqcgT?from_tab_name=main) 帮助测试。[他的github](https://github.com/PISOFT-Studio)
 
 ## 功能特点
 
