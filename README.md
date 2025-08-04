@@ -16,12 +16,18 @@
   - 使用违规ID的玩家会被封禁
 - 异步API调用不影响服务器性能
 - 【2.0版本更新】管理员可通过命令启用/禁用插件
+- 【4.0-RELEASE版本更新】可通过/aprc test测试API地址连接
+- 【4.0-RELEASE版本更新】可通过配置文件更改API相关配置（也就是说作者可以上传提前打包好的jar了）
+- 【4.0-RELEASE版本更新】/aprc reload可重载配置文件
+- 【4.0-RELEASE版本更新】增加一个备用API地址位，防止其中一个API平台突然爆炸
 
 ## 安装要求
 
 - Minecraft Paper服务器 1.21.4+
 - Java 17或更高版本
-- 有效的OpenRouter API密钥（请访问[openrouter.ai](https://openrouter.ai)申请）
+- 有效的OpenRouter API密钥（请访问[openrouter.ai](https://openrouter.ai)创建）
+- （可选）有效的硅基流动API密钥（请访问[硅基流动官网](https://siliconflow.cn/)创建）
+- （可选）其它API开放平台的API密钥（需要一定编程基础，需要改模型名称和API地址）
 
 ## 安装方法
 
@@ -36,16 +42,15 @@
 
 ### API设置（修改Main.java文件）
 
-```java
-// 必填，自己去申请API密钥
-private static final String API_KEY = "你的API密钥"; 
-
-// 推荐模型（deepseek免费版）：
-private static final String MODEL = "deepseek/deepseek-chat-v3-0324:free";
-
-// API端点（请勿修改，除非你要换API提供商）
-private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
-```
+   ```yaml
+   primary:
+     api_key: 主API密钥
+     model: deepseek/deepseek-chat-v3-0324:free
+     api_url: https://openrouter.ai/api/v1/chat/completions
+   backup:
+     api_key: 备用API密钥
+     model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+     api_url: https://api.siliconflow.cn/v1/chat/completions
 
 ### 响应自定义
 
@@ -60,7 +65,7 @@ private static final String API_URL = "https://openrouter.ai/api/v1/chat/complet
    - 扫描所有聊天消息
    - 检查新玩家名称
    - 检测到违规时自动采取行动
-3. 拥有aprc.admin权限的玩家可以通过 /aprc <on|off> 命令来启用/禁用插件
+3. 拥有aprc.admin权限的玩家可以通过 /aprc <test|on|off> 命令来测试API地址/启用/禁用插件
 
 ## 注意事项
 
@@ -72,7 +77,7 @@ private static final String API_URL = "https://openrouter.ai/api/v1/chat/complet
 ## 开发者信息
 
 - 项目名称: Anti-Politically-Related-Content
-- 版本: 2.0
+- 版本: 4.0-RELEASE
 - 依赖库:
   - PaperAPI
   - OkHttp 4.12.0
