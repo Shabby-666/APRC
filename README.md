@@ -70,7 +70,7 @@
    - 扫描所有聊天消息
    - 检查新玩家名称
    - 检测到违规时自动采取行动
-3. 拥有aprc.admin权限的玩家可以通过 /aprc <test|on|off> 命令来测试API地址/启用/禁用插件
+3. 拥有aprc.admin权限的玩家可以通过 /aprc <test|on|off|reload> 命令来测试API地址/启用插件/禁用插件/重载插件
 
 ## 注意事项
 
